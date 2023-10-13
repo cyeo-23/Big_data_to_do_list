@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "to-do-list-fal-cay"
+version = "0.1.0"
+description = ""
+authors = ["cyeo-23, HassaneFalmata"]
+readme = "README.md"
+packages = [{include = "to_do_list_fal_cay"}]
+
+[tool.poetry.dependencies]
+python = "3.11.6"
+pandas = "^2.1.1"
+htbuilder = "^0.6.2"
+streamlit = "^1.27.2"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
