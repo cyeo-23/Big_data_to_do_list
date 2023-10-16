@@ -1,4 +1,5 @@
 # This workflow runs tests on push and pull request events, using Python 3.11.5, Poetry and Pytest. The coverage must be more than 90%.
+# run using node16
 name: Test
 on: [push, pull_request]
 
@@ -10,9 +11,9 @@ jobs:
       matrix:
         python-version: [3.11.5]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v3
         with:
           python-version: ${{ matrix.python-version }}
       - name: Install dependencies
