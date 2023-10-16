@@ -1,0 +1,33 @@
+# This workflow runs tests on push and pull request events, using Python 3.11.5, Poetry and Pytest. The coverage must be more than 90%.
+name: Test
+on: [push, pull_request]
+runs-on: ubuntu-latest
+jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.11.5]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install poetry
+          poetry install
+      - name: Test with pytest
+        run: |
+          poetry run pytest --cov=src --cov-report=xml
+      - name: Report coverage
+        run: |
+          poetry run coverage report
+          poetry run coverage xml
+      - name: Check coverage is above 90%
+        run: |
+          poetry run coverage report --fail-under=90
+  # Path: .github/workflows/test.yml
