@@ -2,7 +2,7 @@
 
 name: Linting
 on: [push, pull_request]
-runs-on: ubuntu-latest
+
 jobs:
   lint:
     name: Lint

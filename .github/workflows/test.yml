@@ -1,7 +1,7 @@
 # This workflow runs tests on push and pull request events, using Python 3.11.5, Poetry and Pytest. The coverage must be more than 90%.
 name: Test
 on: [push, pull_request]
-runs-on: ubuntu-latest
+
 jobs:
   test:
     name: Test
