@@ -16,7 +16,7 @@ jobs:
           python-version: 3.11.5 
       - name: Install Poetry
         run: |
-        curl -sSL https://install.python-poetry.org | python3 -
+          curl -sSL https://install.python-poetry.org | python3 -
       - name: Generate requirements.txt from pyproject.toml
         run: |
           poetry export -f requirements.txt -o requirements.txt
