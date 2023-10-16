@@ -1,11 +1,10 @@
-""" This module provides the main functionality for the Streamlit application. """
+"""This module provides the main functionality for the Streamlit application."""
 import streamlit as st
 from utils.st_utils import footer
 
 
 def main():
     """Display the main Streamlit application page."""
-
     st.set_page_config(layout="wide", page_title="You do", page_icon="📜")
 
     # Styling for the page

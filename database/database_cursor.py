@@ -1,1 +1,1 @@
-""" This is the database configuration."""
+"""This is the database configuration."""
