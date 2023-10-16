@@ -1,10 +1,3 @@
-def services():
-    """
-    This function returns a list of available services.
-
-    Returns:
-    --------
-    list:
-        A list of available services.
-    """
-    return 0
+"""
+This module is intended for service. Currently, it's empty and will be populated with services in the future.
+"""
