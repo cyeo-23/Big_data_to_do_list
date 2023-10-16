@@ -1,7 +1,4 @@
-"""
-This module provides the main functionality for the Streamlit application.
-"""
-
+""" This module provides the main functionality for the Streamlit application. """
 import streamlit as st
 from utils.st_utils import footer
 

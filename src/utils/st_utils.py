@@ -1,7 +1,4 @@
-"""
-Utility functions for customizing the appearance and behavior of Streamlit applications.
-"""
-
+"""Utility functions for customizing the appearance and behavior of Streamlit applications."""
 import streamlit as st
 from htbuilder import HtmlElement, div, hr, p, styles, img, a
 from htbuilder.units import percent, px

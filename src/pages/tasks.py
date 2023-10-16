@@ -1,7 +1,4 @@
-"""
-Module to display the tasks page in the Streamlit application.
-"""
-
+"""Module to display the tasks page in the Streamlit application."""
 import streamlit as st
 from utils.st_utils import footer
 
