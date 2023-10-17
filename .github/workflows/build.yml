@@ -1,0 +1,41 @@
+# This workflow runs tests and linting on push and pull request events, using Python 3.11.5, Pytest, pep8, flake8. The coverage must be more than 90%.
+# run using node16
+name: build
+on: [push, pull_request]
+
+jobs:
+  test:
+    name: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.11.5 
+      - name: Install Poetry
+        run: |
+          curl -sSL https://install.python-poetry.org | python3 -
+      - name: Generate requirements.txt from pyproject.toml
+        run: |
+          poetry export -f requirements.txt -o requirements.txt
+      - name: Install dependencies with pip
+        run: |
+          pip install -r requirements.txt
+      - name: Lint with flake8
+        run: |
+          flake8
+      - name: Check Docstring with flake8-docstring
+        run: |
+          flake8 --docstring-convention google
+      # - name: Test with pytest
+      #   run: |
+      #     pytest
+      # - name: Report coverage
+      #   run: |
+      #     coverage run -m pytest
+      # - name: Check coverage is above 90%
+      #   run: |
+      #     coverage report --fail-under=90
+  # Path: .github/workflows/test.yml

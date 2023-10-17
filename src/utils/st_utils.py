@@ -1,27 +1,30 @@
+"""Utility functions for customizing Streamlit applications."""
 import streamlit as st
-from htbuilder import HtmlElement, div, ul, li, br, hr, a, p, img, styles, classes, fonts
+from htbuilder import HtmlElement, div, hr, p, styles, img, a
 from htbuilder.units import percent, px
-from htbuilder.funcs import rgba, rgb
+
 
 def image(src_as_string, **style):
+    """Return an image element with the specified source and styles."""
     return img(src=src_as_string, style=styles(**style))
 
 
-def link(link, text, **style):
-    return a(_href=link, _target="_blank", style=styles(**style))(text)
+def link(href, text, **style):
+    """Return a link element with the specified href, text and styles."""
+    return a(_href=href, _target="_blank", style=styles(**style))(text)
 
 
 def layout(*args):
-
-    style = """
+    """Create and display a layout with the given elements."""
+    # Define styles for the page and footer
+    page_style = """
     <style>
-      # MainMenu {visibility: hidden;}
-      footer {visibility: hidden;}
-     .stApp { bottom: 105px; }
+        # MainMenu {visibility: hidden;}
+        footer {visibility: hidden;}
+        .stApp { bottom: 105px; }
     </style>
     """
-
-    style_div = styles(
+    footer_style = styles(
         position="fixed",
         left=0,
         bottom=0,
@@ -32,8 +35,7 @@ def layout(*args):
         height="auto",
         opacity=1
     )
-
-    style_hr = styles(
+    hr_style = styles(
         display="block",
         margin=px(8, 8, "auto", "auto"),
         border_style="inset",
@@ -41,34 +43,30 @@ def layout(*args):
     )
 
     body = p()
-    foot = div(
-        style=style_div
-    )(
-        hr(
-            style=style_hr
-        ),
+    foot = div(style=footer_style)(
+        hr(style=hr_style),
         body
     )
 
-    st.markdown(style, unsafe_allow_html=True)
+    st.markdown(page_style, unsafe_allow_html=True)
 
     for arg in args:
-        if isinstance(arg, str):
-            body(arg)
-
-        elif isinstance(arg, HtmlElement):
+        if isinstance(arg, (str, HtmlElement)):
             body(arg)
 
     st.markdown(str(foot), unsafe_allow_html=True)
 
 
 def footer():
-    myargs = [
+    """Display a custom footer on the Streamlit page."""
+    elements = [
         "Made in Streamlit",
-        image('https://avatars3.githubusercontent.com/u/45109972?s=400&v=4',
-              width=px(25), height=px(25)),
+        image(
+            'https://avatars3.githubusercontent.com/u/45109972?s=400&v=4',
+            width=px(25), height=px(25)),
         " by ",
-        link("https://www.linkedin.com/in/caudanna-moussa-y-70115710b/", "Caudanna Moussa YEO"),
+        link(
+            "https://www.linkedin.com/in/caudanna-moussa-y-70115710b/",
+            "Caudanna Moussa YEO"),
     ]
-    layout(*myargs)
-
+    layout(*elements)
