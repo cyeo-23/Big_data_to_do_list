@@ -4,61 +4,59 @@
 class TaskNotFound(Exception):
     """
     Exception raised when a task is not found in the database.
-    
+
     Attributes:
         Exception (_type_): _description_
     """
-    
+
     pass
 
 
 class InvalidTaskStatus(Exception):
     """Exception raised when a task attribute is invalid.
-    
+
     Args:
         Exception (_type_): _description_
     """
-    
-    pass
 
+    pass
 
 
 class UserNotFound(Exception):
     """Exception raised when a user is not found in the database.
-    
+
     Args:
         Exception (_type_): _description_
     """
-    
+
     pass
 
 
 class UserAlreadyExists(Exception):
     """Exception raised when trying to add a user that already exists.
-    
+
     Args:
         Exception (_type_): _description_
     """
-    
+
     pass
 
 
 class InvalidUser(Exception):
     """Exception raised when a user attribute is invalid.
-    
+
     Args:
         Exception (_type_): _description_
     """
-    
-    pass
 
+    pass
 
 
 class TaskAlreadyExists(Exception):
     """Exception raised when trying to add a task that already exists in a category.
-    
+
     Args:
         Exception (_type_): _description_
     """
-    
+
     pass

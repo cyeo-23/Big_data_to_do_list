@@ -1,6 +1,8 @@
 """This module contains the logger class and its configurations."""
 
 import logging
+
+
 class LoggerConfigurations:
     """Configuration for the logger."""
 
