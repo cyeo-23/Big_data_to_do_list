@@ -1,14 +1,6 @@
-""" class Logger: 
-        - log_error: log an error
-        - log_debug: log a debug
-        - log_critical: log a critical
-    class LoggerConfigurations:
-        - get_logger: return a logger instance for the given name 
-"""
+"""This module contains the logger class and its configurations."""
 
 import logging
-
-
 class LoggerConfigurations:
     """Configuration for the logger"""
 
@@ -30,7 +22,7 @@ class LoggerConfigurations:
 
         # Error handler
         error_file_handler = logging.FileHandler('logs/error.log')
-        error_file_handler.setLevel(logging.ERROR) #Error is handling error and critical
+        error_file_handler.setLevel(logging.ERROR)
         error_file_handler.setFormatter(formatter)
         logger.addHandler(error_file_handler)
 
@@ -44,22 +36,26 @@ class LoggerConfigurations:
 
 
 class Logger:
-    """Class to log different levels of logs.""" 
+    """Class to log different levels of logs"""
+
     def __init__(self, name=__name__):
+        """Initialize the logger with a specific name"""
         self.logger = LoggerConfigurations.get_logger(name)
 
     def log_error(self, msg):
+        """Log an error message"""
         self.logger.error(msg)
 
     def log_debug(self, msg):
+        """Log a debug message"""
         self.logger.debug(msg)
 
     def log_critical(self, msg):
+        """Log a critical message"""
         self.logger.critical(msg)
 
-
-#if __name__ == "__main__":
-#    for testing purpose
+# Test our logger
+# if __name__ == "__main__":
 #    log = Logger()
 #    log.log_error("this is a test for error message")
 #    log.log_debug("this is a test for debug message")
