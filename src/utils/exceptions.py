@@ -2,8 +2,7 @@
 
 
 class TaskNotFound(Exception):
-    """
-    Exception raised when a task is not found in the database.
+    """Exception raised when a task is not found in the database.
 
     Attributes:
         Exception (_type_): _description_
