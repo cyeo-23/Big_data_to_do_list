@@ -53,7 +53,7 @@ class InvalidUser(Exception):
 
 
 class TaskAlreadyExists(Exception):
-    """Exception raised when trying to add a task that already exists in a category.
+    """Exception raised when adding a task already exists.
 
     Args:
         Exception (_type_): _description_
