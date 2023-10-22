@@ -23,6 +23,9 @@ jobs:
       - name: Install dependencies with pip
         run: |
           pip install -r requirements.txt
+      - name: Install flake8 with pip
+        run: |
+          pip install flake8
       - name: Lint with flake8
         run: |
           flake8
