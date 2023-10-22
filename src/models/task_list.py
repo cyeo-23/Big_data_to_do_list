@@ -15,7 +15,7 @@ class TaskList:
 
         Args:
             category_name (str): The name of the category.
-            collection (str, optional): The name of the collection to use.
+            collection_name (str): The name of the collection to use.
         """
         self.category_name = category_name
         self.collection = db[collection_name]
