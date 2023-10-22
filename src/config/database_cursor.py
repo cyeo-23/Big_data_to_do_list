@@ -15,7 +15,7 @@ atlas = os.getenv("atlas_link")
 
 
 def get_db_connection(uri):
-    """This fuction create connection to the MongoDB database."""
+    """Create connection to the database."""
     client = MongoClient(uri)
     return client
 
