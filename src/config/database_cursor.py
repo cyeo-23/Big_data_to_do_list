@@ -1,7 +1,8 @@
-"""This module start a connection to the MongoDB
-database and instantiate the client and db object
+"""This module start a connection to the MongoDBdatabase.
+It also instantiate the client and db object.
 
-The module take the mongoDB uri in the .env file and create a client to the mongoDB database
+The module take the mongoDB uri in the .env file
+and create a client to the mongoDB database.
 """
 import os
 from dotenv import load_dotenv
@@ -15,7 +16,7 @@ atlas = os.getenv("atlas_link")
 
 
 def get_db_connection(uri):
-    """This fuction create connection to the MongoDB database"""
+    """This fuction create connection to the MongoDB database."""
     client = MongoClient(uri)
     return client
 
