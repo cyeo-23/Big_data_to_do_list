@@ -14,7 +14,5 @@ def get_db_connection(uri):
     client = MongoClient(uri)
     return client                          
 
-
-
 client = get_db_connection(atlas)
 db = client.get_database()
