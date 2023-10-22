@@ -1,5 +1,8 @@
 """This module start a connection to the MongoDB
-database and instantiate the client and db object"""
+database and instantiate the client and db object
+
+The module take the mongoDB uri in the .env file and create a client to the mongoDB database
+"""
 import os
 from dotenv import load_dotenv
 from pymongo.mongo_client import MongoClient
