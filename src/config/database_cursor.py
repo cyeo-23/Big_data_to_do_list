@@ -1,5 +1,4 @@
-"""This module start a connection to the MongoDBdatabase.
-It also instantiate the client and db object.
+"""Module for connection to the MongoDB database.
 
 The module take the mongoDB uri in the .env file
 and create a client to the mongoDB database.
