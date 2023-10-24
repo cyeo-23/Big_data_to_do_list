@@ -14,7 +14,8 @@ class Task:
                     description: str,
                     date: str,
                     status: str,
-                    category: str) -> None:
+                    category: str,
+                    user_id: str) -> None:
         """Initialize a Task object.
 
         Args:
@@ -23,6 +24,7 @@ class Task:
             date (str): The creation date of the task.
             status (str): The status of the task.
             category (str): The category of the task.
+            user_id (str): The user ID of the task.
         """
         # id will be set by the database mongo db
         self.id = None
@@ -33,6 +35,7 @@ class Task:
         status = "ongoing"
         self.status = status
         self.category = category
+        self.user_id = user_id
 
     def complete(self) -> None:
         """Mark the task as completed."""
@@ -46,5 +49,6 @@ class Task:
             "description": self.description,
             "creation_date": self.creation_date,
             "status": self.status,
-            "category": self.category
+            "category": self.category,
+            "user_id": self.user_id
         }
