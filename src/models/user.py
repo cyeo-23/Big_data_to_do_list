@@ -46,6 +46,7 @@ class User:
 
         Args:
             user_dict (dict): The dictionary of user information.
+
         Returns:
             User: The User object created from the dictionary.
         """

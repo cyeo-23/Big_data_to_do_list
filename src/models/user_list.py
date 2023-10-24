@@ -50,9 +50,11 @@ class UserList:
 
         Args:
             pseudo (str): The pseudo of the user.
+
         Raises:
             UserNotFound: Exception when user not found.
             Mongo Exception: if pymongo find exception.
+
         Returns:
             user: Return a user
         """
@@ -74,6 +76,7 @@ class UserList:
 
         Args:
             user (User): the user object to update.
+
         Raises:
             Mongo Exception: if pymongo find exception.
         """
@@ -101,6 +104,7 @@ class UserList:
 
         Args:
             id (str): ID of the user to delete.
+
         Raises:
             UserNotFound: Exception when user not found.
             Mongo Exception: if pymongo find exception.
