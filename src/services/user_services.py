@@ -4,13 +4,14 @@ from src.utils.logger import Logger
 from src.utils.exceptions import UserAlreadyExists, UserNotFound
 from src.config.database_cursor import db
 from src.models.user import User
+import argon2
 
 log = Logger(__name__)
 
 COLLECTION = "users"
 
 
-class UserList:
+class UserServices:
     """This class is for UserList model."""
 
     def __init__(self) -> None:
@@ -34,7 +35,7 @@ class UserList:
             if existing_user:
                 raise UserAlreadyExists(
                     f"A user with pseudo{user.pseudo} exists.")
-
+            user.password = argon2.hash_password(user.password)
             result = self.collection.insert_one(user.to_dict())
             user.id = result.inserted_id
             log.log_debug(f"user {user.pseudo} added to the database.")
@@ -45,8 +46,8 @@ class UserList:
         except Exception as e:
             log.log_error(f"Une erreur inattendue s'est produite: {e}")
 
-    def get_user(self, pseudo: str) -> User:
-        """Find a user from the database.
+    def connect_user(self, pseudo: str, password: str) -> User:
+        """Connect a user to the app.
 
         Args:
             pseudo (str): The pseudo of the user.
@@ -59,9 +60,12 @@ class UserList:
             user: Return a user
         """
         try:
-            user_found = self.collection.find_one({"pseudo": pseudo})
+            hash = argon2.hash_password(password)
+            user_found = self.collection.find_one({"pseudo": pseudo,
+                                                   "password": hash})
             if not user_found:
-                raise UserNotFound(f"user with pseudo {pseudo} not found.")
+                raise UserNotFound("""Aucun utilisateur trouvé avec ses crédentials.
+                                   Veuillez verifier svp vos accès""")
             user = User.from_dict(user_found)
             return user
         except pymongo.errors.ConnectionFailure as e:

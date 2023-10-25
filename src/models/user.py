@@ -11,24 +11,28 @@ class User:
                     self,
                     firstname: str,
                     lastname: str,
+                    password: str,
                     pseudo: str) -> None:
         """Initialize a User object.
 
         Args:
             firstname (str): The firstname of the user.
             lastname (str): The lastname of the user.
-            pseudo (str): The creation date of the user.
+            password (str): The lastname of the user.
+            pseudo (str): The pseudo of the user.
         """
         # id will be set by the database mongo db
         self.id = None
         self.firstname = firstname
         self.lastname = lastname
+        self.password = password
         self.pseudo = pseudo
 
-    def update(self, firstname, lastname, pseudo) -> None:
+    def update(self, firstname, lastname, pseudo, password) -> None:
         """Updade User infos."""
         self.firstname = firstname
         self.lastname = lastname
+        self.pasword = password
         self.pseudo = pseudo
         log.log_debug(f"User {self.id} is modified")
 
