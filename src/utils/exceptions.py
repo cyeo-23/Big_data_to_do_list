@@ -11,7 +11,7 @@ class TaskNotFound(Exception):
     pass
 
 
-class InvalidTaskStatus(Exception):
+class InvalidTask(Exception):
     """Exception raised when a task attribute is invalid.
 
     Args:
