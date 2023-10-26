@@ -1,4 +1,4 @@
-"""This module is for userList model."""
+"""This module is for services model."""
 import pymongo
 from src.utils.logger import Logger
 from src.utils.exceptions import UserAlreadyExists, UserNotFound
@@ -12,7 +12,7 @@ COLLECTION = "users"
 
 
 class UserServices:
-    """This class is for UserList model."""
+    """This class is for user services model."""
 
     def __init__(self) -> None:
         """Initialize a userList object.
