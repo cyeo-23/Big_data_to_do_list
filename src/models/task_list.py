@@ -3,6 +3,7 @@ from src.utils.logger import Logger
 from src.utils.exceptions import TaskNotFound, InvalidTask, TaskAlreadyExists
 from src.config.database_cursor import db
 from src.models.task import Task
+from src.models.user import User
 
 log = Logger(__name__)
 
@@ -18,18 +19,19 @@ class TaskList:
 
         Args:
             category_name (str): The name of the category.
-            collection (str): The name of the collection.
         """
         self.category_name = category_name
         self.collection = db[COLLECTION]
 
-    def add_task(self, task: Task) -> None:
+    def add_task(self, task: Task, user: User) -> None:
         """Add a task to the database.
 
         Args:
             task (Task): The task to add.
+            user (User): The user to add.
         """
         try:
+            task.user_id = user.id
             result = self.collection.insert_one(task.to_dict())
             task.id = result.inserted_id
             log.log_debug(f"Task {task.id} added to the list.")
@@ -65,9 +67,9 @@ class TaskList:
             print(e)
             log.log_error(f"Failed to get task due to error: {str(e)}")
 
-    def get_tasks(self) -> list:
+    def get_tasks(self, user: User) -> list:
         """Get all tasks from the list."""
-        tasks = self.collection.find()
+        tasks = self.collection.find({"user_id": user.id})
         return [Task(
                         task["name"],
                         task["description"],
@@ -115,6 +117,27 @@ class TaskList:
         except InvalidTask as e:
             print(e)
             log.log_error(f"Failed to update task status: {str(e)}")
+
+    def update_task(self, task_id: str, task: Task) -> None:
+        """Update a task.
+
+        Args:
+            task_id (str): ID of the task to update.
+            task (Task): The task to update.
+
+        Raises:
+            TaskNotFound: Exception when task not found.
+        """
+        try:
+            result = self.collection.update_one(
+                {"_id": task_id},
+                {"$set": task.to_dict()})
+            if result.modified_count == 0:
+                raise TaskNotFound(f"Task with ID {task_id} not found.")
+            log.log_debug(f"Task {task_id} updated.")
+        except TaskNotFound as e:
+            print(e)
+            log.log_error(f"Failed to update task due to error: {str(e)}")
 
     def remove_task(self, task_id: str) -> None:
         """Delete task.
