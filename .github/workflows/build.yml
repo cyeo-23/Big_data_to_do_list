@@ -32,6 +32,8 @@ jobs:
       - name: Check Docstring with flake8-docstring
         run: |
           flake8 --docstring-convention google
+      - name: Create logs directory
+        run: mkdir -p logs
       - name: Test with pytest
         run: |
           pytest
