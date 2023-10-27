@@ -51,32 +51,44 @@ class TaskList:
         Returns:
             Task: Return a task
         """
-        try:
-            task_data = self.collection.find_one({"_id": task_id})
-            if not task_data:
-                raise TaskNotFound(f"Task with ID {task_id} not found.")
-            task = Task(task_data["name"],
-                        task_data["description"],
-                        task_data["creation_date"],
-                        task_data["status"],
-                        task_data["category"],
-                        task_data["user_id"])
-            task.id = task_data['_id']
-            return task
-        except TaskNotFound as e:
-            print(e)
-            log.log_error(f"Failed to get task due to error: {str(e)}")
+        task_data = self.collection.find_one({"_id": task_id})
+        if not task_data:
+            raise TaskNotFound(f"Task with ID {task_id} not found.")
+        task = Task(task_data["name"],
+                    task_data["description"],
+                    task_data["creation_date"],
+                    task_data["status"],
+                    task_data["category"],
+                    task_data["user_id"])
+        task.id = task_data['_id']
+        return task
 
     def get_tasks(self, user: User) -> list:
-        """Get all tasks from the list."""
-        tasks = self.collection.find({"user_id": user.id})
-        return [Task(
-                        task["name"],
-                        task["description"],
-                        task["creation_date"],
-                        task["status"],
-                        task["category"],
-                        task["user_id"]) for task in tasks]
+        """Get all tasks from the list.
+
+        Args:
+            user (User): The user to add.
+
+        Returns:
+            list: list of tasks.
+        """
+        try:
+            tasks = self.collection.find({"user_id": user.id})
+            list_tasks = []
+            for task in tasks:
+                task_object = Task(
+                                    task["name"],
+                                    task["description"],
+                                    task["creation_date"],
+                                    task["status"],
+                                    task["category"],
+                                    task["user_id"])
+                task_object.id = task['_id']
+                list_tasks.append(task_object)
+            return list_tasks
+        except TaskNotFound as e:
+            print(e)
+            log.log_error(f"Failed to get tasks due to error: {str(e)}")
 
     def get_ongoing_task(self) -> list:
         """Get ongoing tasks list.
@@ -85,38 +97,39 @@ class TaskList:
             list: list of ongoing tasks.
         """
         try:
+            list_tasks = []
             tasks = self.collection.find({"status": "ongoing"})
-            return [Task(
-                            task["name"],
-                            task["description"],
-                            task["creation_date"],
-                            task["status"],
-                            task["category"],
-                            task["user_id"]) for task in tasks]
+            for task in tasks:
+                task_object = Task(
+                                    task["name"],
+                                    task["description"],
+                                    task["creation_date"],
+                                    task["status"],
+                                    task["category"],
+                                    task["user_id"])
+                task_object.id = task['_id']
+                list_tasks.append(task_object)
+            return list_tasks
         except TaskNotFound as e:
             print(e)
-            log.log_error(f"Failed to get task due to error: {str(e)}")
+            log.log_error(f"Failed to get tasks due to error: {str(e)}")
 
     def complete_task(self, task_id: str, status: str) -> None:
         """Update the status of a task.
 
         Args:
-            task_id (str): _description_
-            status (str): _description_
+            task_id (str): The ID of the task to update.
+            status (str): The status of the task.
 
         Raises:
             InvalidTaskStatus: if the status is not valid.
         """
-        try:
-            if status not in ["ongoing", "completed"]:
-                raise InvalidTask(f"Invalid status {status}.")
-            self.collection.update_one(
-                {"_id": task_id},
-                {"$set": {"status": status}})
-            log.log_debug(f"Task {task_id} status updated to {status}.")
-        except InvalidTask as e:
-            print(e)
-            log.log_error(f"Failed to update task status: {str(e)}")
+        if status not in ["ongoing", "completed"]:
+            raise InvalidTask(f"Invalid status {status}.")
+        self.collection.update_one(
+            {"_id": task_id},
+            {"$set": {"status": status}})
+        log.log_debug(f"Task {task_id} status updated to {status}.")
 
     def update_task(self, task_id: str, task: Task) -> None:
         """Update a task.
@@ -128,16 +141,12 @@ class TaskList:
         Raises:
             TaskNotFound: Exception when task not found.
         """
-        try:
-            result = self.collection.update_one(
-                {"_id": task_id},
-                {"$set": task.to_dict()})
-            if result.modified_count == 0:
-                raise TaskNotFound(f"Task with ID {task_id} not found.")
-            log.log_debug(f"Task {task_id} updated.")
-        except TaskNotFound as e:
-            print(e)
-            log.log_error(f"Failed to update task due to error: {str(e)}")
+        result = self.collection.update_one(
+            {"_id": task_id},
+            {"$set": task.to_dict()})
+        if result.modified_count == 0:
+            raise TaskNotFound(f"Task with ID {task_id} not found.")
+        log.log_debug(f"Task {task_id} updated.")
 
     def remove_task(self, task_id: str) -> None:
         """Delete task.
@@ -148,11 +157,7 @@ class TaskList:
         Raises:
             TaskNotFound: Exception when task not found.
         """
-        try:
-            result = self.collection.delete_one({"task_id": task_id})
-            if result.deleted_count == 0:
-                raise TaskNotFound(f"Task with ID {task_id} not found.")
-            log.log_debug(f"Task {task_id} deleted.")
-        except TaskNotFound as e:
-            print(e)
-            log.log_error(f"Failed to delete task due to error: {str(e)}")
+        result = self.collection.delete_one({"_id": task_id})
+        if result.deleted_count == 0:
+            raise TaskNotFound(f"Task with ID {task_id} not found.")
+        log.log_debug(f"Task {task_id} deleted.")

@@ -32,13 +32,12 @@ jobs:
       - name: Check Docstring with flake8-docstring
         run: |
           flake8 --docstring-convention google
-      # - name: Test with pytest
-      #   run: |
-      #     pytest
-      # - name: Report coverage
-      #   run: |
-      #     coverage run -m pytest
-      # - name: Check coverage is above 90%
-      #   run: |
-      #     coverage report --fail-under=90
-  # Path: .github/workflows/test.yml
+      - name: Test with pytest
+        run: |
+          pytest
+      - name: Report coverage
+        run: |
+          coverage run -m pytest
+      - name: Check coverage is above 90%
+        run: |
+          coverage report --fail-under=90

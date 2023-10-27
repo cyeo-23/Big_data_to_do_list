@@ -12,7 +12,7 @@ class Task:
                     self,
                     name: str,
                     description: str,
-                    date: str,
+                    date: datetime,
                     status: str,
                     category: str,
                     user_id: str) -> None:
@@ -30,21 +30,17 @@ class Task:
         self.id = None
         self.name = name
         self.description = description
-        date = datetime.now()
+        date = datetime.now().date()
         self.creation_date = date
         status = "ongoing"
         self.status = status
         self.category = category
         self.user_id = user_id
 
-    def complete(self) -> None:
-        """Mark the task as completed."""
-        self.status = "completed"
-        log.log_debug(f"Task {self.id} marked as completed.")
-
     def to_dict(self) -> dict:
         """Convert the task to a dictionary."""
         return {
+
             "name": self.name,
             "description": self.description,
             "creation_date": self.creation_date,
