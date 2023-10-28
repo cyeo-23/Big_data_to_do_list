@@ -64,8 +64,8 @@ class UserServices:
             user_found = self.collection.find_one({"pseudo": pseudo,
                                                    "password": hash})
             if not user_found:
-                raise UserNotFound("""Aucun utilisateur trouvé avec ses crédentials.
-                                   Veuillez verifier svp vos accès""")
+                raise UserNotFound("""User not found.
+                                    Please check your credentials.""")
             user = User.from_dict(user_found)
             return user
         except pymongo.errors.ConnectionFailure as e:
