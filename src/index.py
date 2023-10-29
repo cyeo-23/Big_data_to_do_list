@@ -1,6 +1,6 @@
 """This module provides the main functionality."""
 import streamlit as st
-from utils.st_utils import footer
+from utils.st_utils import footer, nav_page
 from utils.logger import Logger
 from services.user_services import UserServices 
 from models.user import User 
@@ -16,16 +16,15 @@ def login_page(service: UserServices):
 
     if st.button("Se connecter"):
         user = service.connect_user(pseudo=pseudo, password=password)
-        print(f"User: {user}")
         if user:
-            st.success(f"Connecté en tant que {user.pseudo} (ID: {user.id})")
-            st.session_state['user_id'] = user.id  # Stocker l'ID de l'utilisateur en session
+            st.session_state['user'] = user
+            nav_page("tasks")
         else:
             st.error("Identifiants incorrects")
             
 def main():
     """Display the main Streamlit application page."""
-    st.set_page_config(layout="wide", page_title="You do", page_icon="📜")
+    st.set_page_config(page_title="Connexion page", page_icon="👥")
 
     # Styling for the page
     st.markdown(
@@ -37,16 +36,13 @@ def main():
         </style>""", unsafe_allow_html=True
     )
 
-    st.markdown('<p class="font">Accueil</p>', unsafe_allow_html=True)
-
     st.sidebar.success("Select an option above.")
     service = UserServices()
 
-    if 'user_id' not in st.session_state:
+    if 'user' not in st.session_state:
         login_page(service)
     else:
-        st.title("Page d'accueil")
-        st.write(f"Connecté en tant qu'utilisateur avec l'ID: {st.session_state.user_id}")
+        nav_page("tasks")
 
     footer()
 

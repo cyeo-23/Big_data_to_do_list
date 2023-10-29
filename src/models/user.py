@@ -58,6 +58,6 @@ class User:
         user = cls(firstname=user_dict["firstname"],
                    lastname=user_dict["lastname"],
                    pseudo=user_dict["pseudo"],
-                   password="#")
+                   password=user_dict["password"])
         user.id = user_dict["_id"]
         return user

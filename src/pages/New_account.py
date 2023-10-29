@@ -1,6 +1,6 @@
 """This module provides the main functionality."""
 import streamlit as st
-from utils.st_utils import footer
+from utils.st_utils import footer, nav_page
 from utils.logger import Logger
 from services.user_services import UserServices 
 from models.user import User 
@@ -38,8 +38,6 @@ def main():
     )
 
     st.markdown('<p class="font">Accueil</p>', unsafe_allow_html=True)
-
-    st.sidebar.success("Select an option above.")
     try :
         service = UserServices()
     except Exception as e :
@@ -48,8 +46,8 @@ def main():
     if 'user_id' not in st.session_state:
         create_account_page(service)
     else:
-        st.title("Page d'accueil")
-        st.write(f"Connecté en tant qu'utilisateur avec l'ID: {st.session_state.user_id}")
+        nav_page("tasks")
+
 
     footer()
 
