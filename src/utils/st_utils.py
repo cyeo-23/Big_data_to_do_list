@@ -94,5 +94,9 @@ def footer():
         link(
             "https://www.linkedin.com/in/caudanna-moussa-y-70115710b/",
             "Caudanna Moussa YEO"),
+        " and ",
+        link(
+            "https://www.linkedin.com/in/falmata-hassane-awada/",
+            "Falmata Hassane Awada"),
     ]
     layout(*elements)

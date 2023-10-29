@@ -25,7 +25,7 @@ def create_account_page(service: UserServices):
    
 def main():
     """Display the main Streamlit application page."""
-    st.set_page_config(layout="wide", page_title="You do", page_icon="📜")
+    st.set_page_config(page_title="You do", page_icon="📜")
 
     # Styling for the page
     st.markdown(
