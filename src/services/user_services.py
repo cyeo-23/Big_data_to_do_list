@@ -1,4 +1,5 @@
 """This module is for services model."""
+from turtle import st
 import pymongo
 from utils.logger import Logger
 from utils.exceptions import UserAlreadyExists, UserNotFound
@@ -88,11 +89,12 @@ class UserServices:
             Mongo Exception: if pymongo find exception.
         """
         try:
+            user.password = self.password_hasher.hash(user.password)
             result = self.collection.update_one(
                 {"_id": user.id},
                 {"$set": user.to_dict()})
             if result.modified_count > 0:
-                raise pymongo.errors.WriteError("No document matches.")
+                log.log_debug(f"user {user.id} modified.")
             else:
                 log.log_debug(f"user {user.id} not found.")
 
@@ -106,6 +108,11 @@ class UserServices:
         except Exception as e:
             log.log_error(f"Une erreur inattendue s'est produite: {e}")
 
+    
+    def disconnect(self):
+        del st.session_state["user"]
+
+    
     def remove_user(self, _id: str) -> None:
         """Delete user.
 

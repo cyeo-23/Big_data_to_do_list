@@ -43,7 +43,7 @@ def main():
     except Exception as e :
         print(e)
 
-    if 'user_id' not in st.session_state:
+    if 'user' not in st.session_state:
         create_account_page(service)
     else:
         nav_page("tasks")

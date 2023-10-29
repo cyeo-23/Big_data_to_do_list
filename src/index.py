@@ -35,8 +35,6 @@ def main():
             }
         </style>""", unsafe_allow_html=True
     )
-
-    st.sidebar.success("Select an option above.")
     service = UserServices()
 
     if 'user' not in st.session_state:
