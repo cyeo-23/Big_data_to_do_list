@@ -30,6 +30,8 @@ class TaskList:
             task (Task): The task to add.
             user (User): The user to add.
         """
+        if user is None:
+            raise InvalidTask("User ID is None.")
         try:
             task.user_id = user.id
             result = self.collection.insert_one(task.to_dict())
