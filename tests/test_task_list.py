@@ -137,6 +137,34 @@ class TestTaskList(unittest.TestCase):
         self.mock_collection.delete_one.assert_called_once_with(
             {"_id": "task_id_456"})
 
+    def test_get_tasks_by_category(self):
+        """Test get_tasks_by_category method."""
+        self.mock_collection.find.return_value = [
+            {
+                "_id": "task_id_123",
+                "name": "TestTask",
+                "description": "Description",
+                "creation_date": "2023-10-26",
+                "status": "ongoing",
+                "category": "TestCategory",
+                "user_id": "user_id_123"
+            },
+            {
+                "_id": "task_id_456",
+                "name": "TestTask2",
+                "description": "Description2",
+                "creation_date": "2023-10-26",
+                "status": "ongoing",
+                "category": "TestCategory",
+                "user_id": "user_id_123"
+            }
+        ]
+        tasks = self.task_list.get_tasks_by_category(
+                                "TestCategory", self.sample_user)
+        self.assertEqual(len(tasks), 2)
+        self.assertEqual(tasks[0].id, "task_id_123")
+        self.assertEqual(tasks[1].id, "task_id_456")
+
 
 if __name__ == '__main__':
     unittest.main()
