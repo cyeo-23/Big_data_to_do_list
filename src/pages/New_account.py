@@ -7,22 +7,22 @@ from models.user import User
 
 log = Logger(__name__)
 
-# Page de connexion
-
-def login_page(service: UserServices):
-    st.title("Page de Connexion")
-    pseudo = st.text_input("Nom d'utilisateur")
-    password = st.text_input("Mot de passe", type="password")
-
-    if st.button("Se connecter"):
-        user = service.connect_user(pseudo=pseudo, password=password)
-        print(f"User: {user}")
-        if user:
-            st.success(f"Connecté en tant que {user.pseudo} (ID: {user.id})")
-            st.session_state['user_id'] = user.id  # Stocker l'ID de l'utilisateur en session
-        else:
-            st.error("Identifiants incorrects")
-            
+def create_account_page(service: UserServices):
+    st.title("Créer un Compte")
+    pseudo = st.text_input("Nom d'Utilisateur")
+    password = st.text_input("Mot de Passe", type="password")
+    firstname = st.text_input("Prenom(s)")
+    lastname = st.text_input("Nom(s)")
+    if st.button("Creer"):
+        new_user = User(firstname=firstname, lastname=lastname, password=password, pseudo=pseudo)
+        try :
+            user = service.add_user(new_user)
+            print(user)
+        except Exception as e :
+            log.log_error(f"Une erreur inattendue s'est produite: {e}")
+        else :
+            st.success("Compte créé avec succès. Vous pouvez maintenant vous connecter.")
+   
 def main():
     """Display the main Streamlit application page."""
     st.set_page_config(layout="wide", page_title="You do", page_icon="📜")
@@ -40,10 +40,13 @@ def main():
     st.markdown('<p class="font">Accueil</p>', unsafe_allow_html=True)
 
     st.sidebar.success("Select an option above.")
-    service = UserServices()
+    try :
+        service = UserServices()
+    except Exception as e :
+        print(e)
 
     if 'user_id' not in st.session_state:
-        login_page(service)
+        create_account_page(service)
     else:
         st.title("Page d'accueil")
         st.write(f"Connecté en tant qu'utilisateur avec l'ID: {st.session_state.user_id}")
