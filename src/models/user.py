@@ -1,6 +1,6 @@
 """This module is for User model."""
 
-from src.utils.logger import Logger
+from utils.logger import Logger
 log = Logger(__name__)
 
 
@@ -42,6 +42,7 @@ class User:
             "firstname": self.firstname,
             "lastname": self.lastname,
             "pseudo": self.pseudo,
+            "password": self.password
         }
 
     @classmethod
@@ -54,8 +55,9 @@ class User:
         Returns:
             User: The User object created from the dictionary.
         """
-        user = cls(user_dict["firstname"],
-                   user_dict["lastname"],
-                   user_dict["pseudo"])
+        user = cls(firstname=user_dict["firstname"],
+                   lastname=user_dict["lastname"],
+                   pseudo=user_dict["pseudo"],
+                   password=user_dict["password"])
         user.id = user_dict["_id"]
         return user

@@ -1,6 +1,6 @@
 """Module to display the tasks page in the Streamlit application."""
 import streamlit as st
-from utils.st_utils import footer
+from utils.st_utils import footer, nav_page
 
 
 def display_page():
@@ -14,9 +14,13 @@ def display_page():
         unsafe_allow_html=True
     )
     st.markdown('<p class="font">Tasks</p>', unsafe_allow_html=True)
+    st.write(f"Connecté en tant qu'utilisateur avec l'ID: {st.session_state.user.id}")
 
     footer()
 
 
 if __name__ == "__main__":
-    display_page()
+    if 'user' not in st.session_state:
+        nav_page("")
+    else:
+        display_page()
