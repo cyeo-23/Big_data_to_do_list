@@ -2,6 +2,7 @@
 import streamlit as st
 from htbuilder import HtmlElement, div, hr, p, styles, img, a
 from htbuilder.units import percent, px
+from streamlit.components.v1 import html
 
 
 def image(src_as_string, **style):
@@ -13,24 +14,29 @@ def link(href, text, **style):
     """Return a link element with the specified href, text and styles."""
     return a(_href=href, _target="_blank", style=styles(**style))(text)
 
-from streamlit.components.v1 import html
 
 def nav_page(page_name, timeout_secs=3):
+    """Function for mavigate between pages."""
     nav_script = """
         <script type="text/javascript">
             function attempt_nav_page(page_name, start_time, timeout_secs) {
                 var links = window.parent.document.getElementsByTagName("a");
                 for (var i = 0; i < links.length; i++) {
-                    if (links[i].href.toLowerCase().endsWith("/" + page_name.toLowerCase())) {
+                    if (links[i].href.toLowerCase().endsWith(
+                        "/" + page_name.toLowerCase())) {
                         links[i].click();
                         return;
                     }
                 }
                 var elasped = new Date() - start_time;
                 if (elasped < timeout_secs * 1000) {
-                    setTimeout(attempt_nav_page, 100, page_name, start_time, timeout_secs);
+                    setTimeout(attempt_nav_page,
+                    100, page_name,
+                    start_time, timeout_secs);
                 } else {
-                    alert("Unable to navigate to page '" + page_name + "' after " + timeout_secs + " second(s).");
+                    message = "Unable to navigate to page '" + page_name;
+                    message += "' after " + timeout_secs + " second(s).";
+                    alert(message);
                 }
             }
             window.addEventListener("load", function() {
@@ -39,6 +45,7 @@ def nav_page(page_name, timeout_secs=3):
         </script>
     """ % (page_name, timeout_secs)
     html(nav_script)
+
 
 def layout(*args):
     """Create and display a layout with the given elements."""

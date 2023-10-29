@@ -23,7 +23,7 @@ class UserServices:
             collection_name (str): The name of the collection to use.
         """
         self.collection = db[COLLECTION]
-        self.password_hasher = argon2.PasswordHasher()
+        self.ph = argon2.PasswordHasher()
 
     def add_user(self, user: User) -> User:
         """Add a user to the database.
@@ -37,7 +37,7 @@ class UserServices:
             if existing_user:
                 raise UserAlreadyExists(
                     f"A user with pseudo{user.pseudo} exists.")
-            user.password = self.password_hasher.hash(user.password)
+            user.password = self.ph.hash(user.password)
             result = self.collection.insert_one(user.to_dict())
             user.id = result.inserted_id
             return user
@@ -64,12 +64,11 @@ class UserServices:
         """
         try:
             user_found = self.collection.find_one({"pseudo": pseudo})
-            if not user_found or not self.password_hasher.verify(user_found["password"], password):
+            is_verified = self.ph.verify(user_found["password"], password)
+            if not user_found or not is_verified:
                 raise UserNotFound("""Aucun utilisateur trouvé avec ses crédentials.
                                    Veuillez verifier svp vos accès""")
-            
-            
-            else :
+            else:
                 user = User.from_dict(user_found)
                 return user
         except pymongo.errors.ConnectionFailure as e:
@@ -108,11 +107,10 @@ class UserServices:
         except Exception as e:
             log.log_error(f"Une erreur inattendue s'est produite: {e}")
 
-    
     def disconnect(self):
+        """Disconnect user."""
         del st.session_state["user"]
 
-    
     def remove_user(self, _id: str) -> None:
         """Delete user.
 

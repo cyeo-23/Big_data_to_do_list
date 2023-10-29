@@ -14,7 +14,7 @@ def display_page():
         unsafe_allow_html=True
     )
     st.markdown('<p class="font">Tasks</p>', unsafe_allow_html=True)
-    st.write(f"Connecté en tant qu'utilisateur avec l'ID: {st.session_state.user.id}")
+    st.write(f"Connecté avec l'ID: {st.session_state.user.id}")
 
     footer()
 
