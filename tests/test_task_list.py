@@ -4,7 +4,7 @@ from unittest.mock import Mock
 from src.models.task_list import TaskList
 from src.models.task import Task
 from src.models.user import User
-from src.utils.exceptions import TaskNotFound
+from src.utils.exceptions import TaskNotFound, InvalidTask
 import datetime
 
 
@@ -136,6 +136,62 @@ class TestTaskList(unittest.TestCase):
         self.task_list.remove_task("task_id_456")
         self.mock_collection.delete_one.assert_called_once_with(
             {"_id": "task_id_456"})
+
+    def test_get_tasks_by_category(self):
+        """Test get_tasks_by_category method."""
+        self.mock_collection.find.return_value = [
+            {
+                "_id": "task_id_123",
+                "name": "TestTask",
+                "description": "Description",
+                "creation_date": "2023-10-26",
+                "status": "ongoing",
+                "category": "TestCategory",
+                "user_id": "user_id_123"
+            },
+            {
+                "_id": "task_id_456",
+                "name": "TestTask2",
+                "description": "Description2",
+                "creation_date": "2023-10-26",
+                "status": "ongoing",
+                "category": "TestCategory",
+                "user_id": "user_id_123"
+            }
+        ]
+        tasks = self.task_list.get_tasks_by_category(
+                                "TestCategory", self.sample_user)
+        self.assertEqual(len(tasks), 2)
+        self.assertEqual(tasks[0].id, "task_id_123")
+        self.assertEqual(tasks[1].id, "task_id_456")
+
+    def test_get_categories(self):
+        """Test get_categories method."""
+        self.mock_collection.distinct.return_value = [
+            "TestCategory",
+            "TestCategory2"
+        ]
+        categories = self.task_list.get_categories(self.sample_user)
+        self.assertEqual(len(categories), 2)
+        self.assertEqual(categories[0], "TestCategory")
+        self.assertEqual(categories[1], "TestCategory2")
+
+    def test_add_task_with_none_user(self):
+        """Test add_task method with None user."""
+        with self.assertRaises(InvalidTask):
+            self.task_list.add_task(self.sample_task, None)
+
+    def test_get_no_ongoing_task(self):
+        """Test get_ongoing_task method with no ongoing tasks."""
+        self.mock_collection.find.return_value = []
+        tasks = self.task_list.get_ongoing_task()
+        self.assertEqual(len(tasks), 0)
+
+    def test_remove_non_existent_task(self):
+        """Test remove_task method with non-existent task."""
+        self.mock_collection.delete_one.return_value = Mock(deleted_count=0)
+        with self.assertRaises(TaskNotFound):
+            self.task_list.remove_task("non_existent_task_id")
 
 
 if __name__ == '__main__':

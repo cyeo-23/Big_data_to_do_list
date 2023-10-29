@@ -30,6 +30,8 @@ class TaskList:
             task (Task): The task to add.
             user (User): The user to add.
         """
+        if user is None:
+            raise InvalidTask("User ID is None.")
         try:
             task.user_id = user.id
             result = self.collection.insert_one(task.to_dict())
@@ -161,3 +163,54 @@ class TaskList:
         if result.deleted_count == 0:
             raise TaskNotFound(f"Task with ID {task_id} not found.")
         log.log_debug(f"Task {task_id} deleted.")
+
+    def get_tasks_by_category(self, category: str, user: User) -> list:
+        """Get tasks by category for a user.
+
+        Args:
+            category (str): The category of the task.
+            user (User): The user.
+
+        Returns:
+            list: list of tasks.
+        """
+        try:
+            tasks = self.collection.find({
+                            "category": category,
+                            "user_id": user.id
+                        })
+            list_tasks = []
+            for task in tasks:
+                task_object = Task(
+                                    task["name"],
+                                    task["description"],
+                                    task["creation_date"],
+                                    task["status"],
+                                    task["category"],
+                                    task["user_id"])
+                task_object.id = task['_id']
+                list_tasks.append(task_object)
+            return list_tasks
+        except TaskNotFound as e:
+            print(e)
+            log.log_error(f"Failed to get tasks due to error: {str(e)}")
+
+    # get all categories of tasks for the connected user
+    def get_categories(self, user: User) -> list:
+        """Get all categories of tasks for the connected user.
+
+        Args:
+            user (User): The user.
+
+        Returns:
+            list: list of categories.
+        """
+        try:
+            categories = []
+            categories = self.collection.distinct(
+                                                    "category",
+                                                    {"user_id": user.id})
+            return categories
+        except TaskNotFound as e:
+            print(e)
+            log.log_error(f"Failed to get categories due to error: {str(e)}")
