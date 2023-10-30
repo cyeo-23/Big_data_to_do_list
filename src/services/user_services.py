@@ -1,5 +1,4 @@
 """This module is for services model."""
-from turtle import st
 import pymongo
 from utils.logger import Logger
 from utils.exceptions import UserAlreadyExists, UserNotFound, UserEmptyPassword
@@ -94,7 +93,7 @@ class UserServices:
         """
         if user.password != "" or user.password is not None:
             try:
-                user.password = self.password_hasher.hash(user.password)
+                user.password = self.ph.hash(user.password)
                 result = self.collection.update_one(
                     {"_id": user.id},
                     {"$set": user.to_dict()})

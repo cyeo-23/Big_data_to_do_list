@@ -1,6 +1,6 @@
 """This module is for User model."""
 
-from src.utils.logger import Logger
+from utils.logger import Logger
 log = Logger(__name__)
 
 

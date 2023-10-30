@@ -29,7 +29,7 @@ def update_user_page(user: User):
                 user.password = new_password
                 try:
                     service.update_user(user)
-                    nav_page("update_user")
+                    nav_page("Modifier_le_profil")
                 except Exception as e:
                     log.log_error(f"Une erreur inattendue s'est produite: {e}")
                 else:
@@ -42,7 +42,7 @@ def update_user_page(user: User):
 
 
 def main():
-    """Display the main Streamlit application page."""
+    """Display the update profile page."""
     st.set_page_config(page_title="User profile", page_icon="👥")
 
     # Styling for the page

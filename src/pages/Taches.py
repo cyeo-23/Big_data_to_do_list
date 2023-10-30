@@ -1,19 +1,33 @@
 """Page for tasks."""
 import streamlit as st
-from utils.st_utils import footer
+from utils.st_utils import footer, nav_page, disconnect
 from services.task_service import TaskService
 
 # Initialize the TaskService
 task_service = TaskService()
 
 # get the current user
-current_user = st.session_state.user
 
 
 def display_page():
     """Display the tasks page."""
-    st.title("Taches")
+    current_user = st.session_state.user
+    st.set_page_config(layout= "wide",
+                       page_title="Taches", page_icon="👥")
 
+    # Styling for the page
+    st.markdown(
+        """<style>.font {
+            font-size:35px;
+            font-family: 'Cooper Black';
+            color: white;
+            }
+        </style>""", unsafe_allow_html=True
+    )
+    
+    if st.sidebar.button("Deconnexion"):
+        disconnect()
+        nav_page("")
     # Create Task
     st.write("\n")
 
@@ -114,4 +128,7 @@ def display_page():
 
 
 if __name__ == "__main__":
-    display_page()
+    if 'user' not in st.session_state:
+        nav_page("")
+    else:
+        display_page()

@@ -1,7 +1,7 @@
 """This module is for Task model."""
 
 from datetime import datetime
-from src.utils.logger import Logger
+from utils.logger import Logger
 log = Logger(__name__)
 
 
