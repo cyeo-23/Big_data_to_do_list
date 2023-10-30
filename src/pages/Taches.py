@@ -36,20 +36,20 @@ def display_page():
         unsafe_allow_html=True
     )
     form_col1, form_col2, form_col3 = st.columns([3, 3, 3])
-    task_name = form_col1.text_input("Nom")
-    task_description = form_col2.text_input("Description")
-    task_category = form_col3.text_input("Catégorie")
+    t_name = form_col1.text_input("Nom")
+    t_description = form_col2.text_input("Description")
+    t_category = form_col3.text_input("Catégorie")
 
     if st.button("Ajouter"):
-        if (task_name == "") or (task_description == "") or (task_category == ""):
+        if (t_name == "") or (t_description == "") or (t_category == ""):
             st.error("Veuillez remplir tous les champs!")
             return
         else:
             task_service.create_task(
-                                        task_name,
-                                        task_description,
+                                        t_name,
+                                        t_description,
                                         current_user,
-                                        task_category)
+                                        t_category)
             st.success("Tache bien ajoutée!")
 
     # List Tasks
