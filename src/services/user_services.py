@@ -2,7 +2,7 @@
 from turtle import st
 import pymongo
 from utils.logger import Logger
-from utils.exceptions import UserAlreadyExists, UserNotFound
+from utils.exceptions import UserAlreadyExists, UserNotFound, UserEmptyPassword
 from config.database_cursor import db
 from models.user import User
 import argon2
@@ -32,22 +32,27 @@ class UserServices:
             user (User): The user to add.
         """
         # check if user pseudo already exists
-        try:
-            existing_user = self.collection.find_one({"pseudo": user.pseudo})
-            if existing_user:
-                raise UserAlreadyExists(
-                    f"A user with pseudo{user.pseudo} exists.")
-            user.password = self.ph.hash(user.password)
-            result = self.collection.insert_one(user.to_dict())
-            user.id = result.inserted_id
-            return user
-            log.log_debug(f"user {user.pseudo} added to the database.")
-        except pymongo.errors.ConnectionFailure as e:
-            log.log_error(f"Erreur de connexion à la BD MongoDB: {e}")
-        except pymongo.errors.PyMongoError as e:
-            log.log_error(f"Une erreur PyMongo s'est produite: {e}")
-        except Exception as e:
-            log.log_error(f"Une erreur inattendue s'est produite: {e}")
+        if user.password != "" or user.password is not None:
+            try:
+                existing_user = self.collection.find_one(
+                    {"pseudo": user.pseudo})
+                if existing_user:
+                    raise UserAlreadyExists(
+                        f"A user with pseudo{user.pseudo} exists."
+                        )
+                user.password = self.ph.hash(user.password)
+                result = self.collection.insert_one(user.to_dict())
+                user.id = result.inserted_id
+                log.log_debug(f"user {user.pseudo} added to the database.")
+                return user
+            except pymongo.errors.ConnectionFailure as e:
+                log.log_error(f"Erreur de connexion à la BD MongoDB: {e}")
+            except pymongo.errors.PyMongoError as e:
+                log.log_error(f"Une erreur PyMongo s'est produite: {e}")
+            except Exception as e:
+                log.log_error(f"Une erreur inattendue s'est produite: {e}")
+        else:
+            raise UserEmptyPassword("The password is empty.")
 
     def connect_user(self, pseudo: str, password: str) -> User:
         """Connect a user to the app.
@@ -66,7 +71,7 @@ class UserServices:
             user_found = self.collection.find_one({"pseudo": pseudo})
             is_verified = self.ph.verify(user_found["password"], password)
             if not user_found or not is_verified:
-                raise UserNotFound("""Aucun utilisateur trouvé.
+                raise UserNotFound("""Aucun utilisateur trouvé avec ses crédentials.
                                    Veuillez verifier svp vos accès""")
             else:
                 user = User.from_dict(user_found)
@@ -87,29 +92,28 @@ class UserServices:
         Raises:
             Mongo Exception: if pymongo find exception.
         """
-        try:
-            user.password = self.password_hasher.hash(user.password)
-            result = self.collection.update_one(
-                {"_id": user.id},
-                {"$set": user.to_dict()})
-            if result.modified_count > 0:
-                log.log_debug(f"user {user.id} modified.")
-            else:
-                log.log_debug(f"user {user.id} not found.")
+        if user.password != "" or user.password is not None:
+            try:
+                user.password = self.password_hasher.hash(user.password)
+                result = self.collection.update_one(
+                    {"_id": user.id},
+                    {"$set": user.to_dict()})
+                if result.modified_count > 0:
+                    log.log_debug(f"user {user.id} modified.")
+                else:
+                    log.log_debug(f"user {user.id} not found.")
 
-            log.log_debug(f"user {user.pseudo} updated.")
-        except pymongo.errors.ConnectionFailure as e:
-            log.log_error(f"Erreur de connexion à la BD MongoDB: {e}")
-        except pymongo.errors.PyMongoError as e:
-            log.log_error(f"Une erreur PyMongo s'est produite: {e}")
-        except pymongo.errors.WriteError as e:
-            log.log_error(f"Une erreur d'écriture s'est produite: {e}")
-        except Exception as e:
-            log.log_error(f"Une erreur inattendue s'est produite: {e}")
-
-    def disconnect(self):
-        """Disconnect user."""
-        del st.session_state["user"]
+                log.log_debug(f"user {user.pseudo} updated.")
+            except pymongo.errors.ConnectionFailure as e:
+                log.log_error(f"Erreur de connexion à la BD MongoDB: {e}")
+            except pymongo.errors.PyMongoError as e:
+                log.log_error(f"Une erreur PyMongo s'est produite: {e}")
+            except pymongo.errors.WriteError as e:
+                log.log_error(f"Une erreur d'écriture s'est produite: {e}")
+            except Exception as e:
+                log.log_error(f"Une erreur inattendue s'est produite: {e}")
+        else:
+            raise UserEmptyPassword("The password is empty.")
 
     def remove_user(self, _id: str) -> None:
         """Delete user.

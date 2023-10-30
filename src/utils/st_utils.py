@@ -15,8 +15,13 @@ def link(href, text, **style):
     return a(_href=href, _target="_blank", style=styles(**style))(text)
 
 
+def disconnect():
+    """Disconnect user."""
+    del st.session_state["user"]
+
+
 def nav_page(page_name, timeout_secs=3):
-    """Navigate to a new page after the given number of seconds."""
+    """Navigate between pages."""
     nav_script = """
         <script type="text/javascript">
             function attempt_nav_page(page_name, start_time, timeout_secs) {
@@ -30,14 +35,13 @@ def nav_page(page_name, timeout_secs=3):
                 }
                 var elasped = new Date() - start_time;
                 if (elasped < timeout_secs * 1000) {
-                    setTimeout(
-                        attempt_nav_page, 100, page_name,
-                        start_time,
-                        timeout_secs);
+                    setTimeout(attempt_nav_page,
+                    100, page_name,
+                    start_time, timeout_secs);
                 } else {
-                    alert(
-                        "Unable to navigate to page '" + page_name +
-                        "' after " + timeout_secs + " second(s).");
+                    message = "Unable to navigate to page '" + page_name;
+                    message += "' after " + timeout_secs + " second(s).";
+                    alert(message);
                 }
             }
             window.addEventListener("load", function() {
@@ -93,5 +97,18 @@ def layout(*args):
 
 def footer():
     """Display a custom footer on the Streamlit page."""
-    elements = ["To do list App"]
+    elements = [
+        "Made in Streamlit",
+        image(
+            'https://avatars3.githubusercontent.com/u/45109972?s=400&v=4',
+            width=px(25), height=px(25)),
+        " by ",
+        link(
+            "https://www.linkedin.com/in/caudanna-moussa-y-70115710b/",
+            "Caudanna Moussa YEO"),
+        " and ",
+        link(
+            "https://www.linkedin.com/in/falmata-hassane-awada/",
+            "Falmata Hassane Awada"),
+    ]
     layout(*elements)

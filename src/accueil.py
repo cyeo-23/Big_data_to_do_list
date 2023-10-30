@@ -7,9 +7,9 @@ from services.user_services import UserServices
 log = Logger(__name__)
 
 
-# Page de connexion
+
 def login_page(service: UserServices):
-    """Display the login page."""
+    """Code for login page."""
     st.title("Page de Connexion")
     pseudo = st.text_input("Nom d'utilisateur")
     password = st.text_input("Mot de passe", type="password")
@@ -36,8 +36,6 @@ def main():
             }
         </style>""", unsafe_allow_html=True
     )
-
-    st.sidebar.success("Select an option above.")
     service = UserServices()
 
     if 'user' not in st.session_state:

@@ -9,7 +9,7 @@ log = Logger(__name__)
 
 
 def create_account_page(service: UserServices):
-    """Display the login page."""
+    """Create account page code."""
     st.title("Créer un Compte")
     pseudo = st.text_input("Nom d'Utilisateur")
     password = st.text_input("Mot de Passe", type="password")
@@ -24,12 +24,12 @@ def create_account_page(service: UserServices):
         except Exception as e:
             log.log_error(f"Une erreur inattendue s'est produite: {e}")
         else:
-            st.success("Compte créé avec succès. Veuillez vous connecter")
+            st.success("Compte créé avec succès")
 
 
 def main():
     """Display the main Streamlit application page."""
-    st.set_page_config(layout="wide", page_title="You do", page_icon="📜")
+    st.set_page_config(page_title="You do", page_icon="📜")
 
     # Styling for the page
     st.markdown(
