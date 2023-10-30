@@ -1,5 +1,4 @@
 """This module is for services model."""
-import pymongo
 from utils.logger import Logger
 from utils.exceptions import UserAlreadyExists, UserNotFound, UserEmptyPassword
 from config.database_cursor import db
@@ -44,10 +43,6 @@ class UserServices:
                 user.id = result.inserted_id
                 log.log_debug(f"user {user.pseudo} added to the database.")
                 return user
-            except pymongo.errors.ConnectionFailure as e:
-                log.log_error(f"Erreur de connexion à la BD MongoDB: {e}")
-            except pymongo.errors.PyMongoError as e:
-                log.log_error(f"Une erreur PyMongo s'est produite: {e}")
             except Exception as e:
                 log.log_error(f"Une erreur inattendue s'est produite: {e}")
         else:
@@ -75,10 +70,6 @@ class UserServices:
             else:
                 user = User.from_dict(user_found)
                 return user
-        except pymongo.errors.ConnectionFailure as e:
-            log.log_error(f"Erreur de connexion à la BD MongoDB: {e}")
-        except pymongo.errors.PyMongoError as e:
-            log.log_error(f"Une erreur PyMongo s'est produite: {e}")
         except Exception as e:
             log.log_error(f"Une erreur inattendue s'est produite: {e}")
 
@@ -103,12 +94,6 @@ class UserServices:
                     log.log_debug(f"user {user.id} not found.")
 
                 log.log_debug(f"user {user.pseudo} updated.")
-            except pymongo.errors.ConnectionFailure as e:
-                log.log_error(f"Erreur de connexion à la BD MongoDB: {e}")
-            except pymongo.errors.PyMongoError as e:
-                log.log_error(f"Une erreur PyMongo s'est produite: {e}")
-            except pymongo.errors.WriteError as e:
-                log.log_error(f"Une erreur d'écriture s'est produite: {e}")
             except Exception as e:
                 log.log_error(f"Une erreur inattendue s'est produite: {e}")
         else:
