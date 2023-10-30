@@ -16,7 +16,7 @@ def link(href, text, **style):
 
 
 def nav_page(page_name, timeout_secs=3):
-    """Function for mavigate between pages."""
+    """Navigate between pages."""
     nav_script = """
         <script type="text/javascript">
             function attempt_nav_page(page_name, start_time, timeout_secs) {
