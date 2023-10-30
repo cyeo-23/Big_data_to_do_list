@@ -1,8 +1,8 @@
 """This module contains the service layer for the task list."""
 from datetime import datetime
-from src.models.task import Task
-from src.models.task_list import TaskList
-from src.models.user import User
+from models.task import Task
+from models.task_list import TaskList
+from models.user import User
 
 
 class TaskService:
@@ -14,7 +14,7 @@ class TaskService:
 
     def create_task(self, name, description, user: User, category=None):
         """Create a new task and add it to the task list."""
-        date = datetime.now().date()
+        date = datetime.now()
         task = Task(name, description, date, status="ongoing",
                     category=category, user_id=user.id)
         self.task_list.add_task(task, user)
@@ -26,6 +26,7 @@ class TaskService:
 
     def set_task_completed(self, task_id: str) -> None:
         """Complete a task."""
+        print("status:", task_id)
         self.task_list.complete_task(task_id, "completed")
 
     def update_existing_task(self, task_id: str, task: Task) -> None:

@@ -2,6 +2,7 @@
 import streamlit as st
 from htbuilder import HtmlElement, div, hr, p, styles, img, a
 from htbuilder.units import percent, px
+from streamlit.components.v1 import html
 
 
 def image(src_as_string, **style):
@@ -12,6 +13,39 @@ def image(src_as_string, **style):
 def link(href, text, **style):
     """Return a link element with the specified href, text and styles."""
     return a(_href=href, _target="_blank", style=styles(**style))(text)
+
+
+def nav_page(page_name, timeout_secs=3):
+    """Navigate to a new page after the given number of seconds."""
+    nav_script = """
+        <script type="text/javascript">
+            function attempt_nav_page(page_name, start_time, timeout_secs) {
+                var links = window.parent.document.getElementsByTagName("a");
+                for (var i = 0; i < links.length; i++) {
+                    if (links[i].href.toLowerCase().endsWith(
+                        "/" + page_name.toLowerCase())) {
+                        links[i].click();
+                        return;
+                    }
+                }
+                var elasped = new Date() - start_time;
+                if (elasped < timeout_secs * 1000) {
+                    setTimeout(
+                        attempt_nav_page, 100, page_name,
+                        start_time,
+                        timeout_secs);
+                } else {
+                    alert(
+                        "Unable to navigate to page '" + page_name +
+                        "' after " + timeout_secs + " second(s).");
+                }
+            }
+            window.addEventListener("load", function() {
+                attempt_nav_page("%s", new Date(), %d);
+            });
+        </script>
+    """ % (page_name, timeout_secs)
+    html(nav_script)
 
 
 def layout(*args):
@@ -59,14 +93,5 @@ def layout(*args):
 
 def footer():
     """Display a custom footer on the Streamlit page."""
-    elements = [
-        "Made in Streamlit",
-        image(
-            'https://avatars3.githubusercontent.com/u/45109972?s=400&v=4',
-            width=px(25), height=px(25)),
-        " by ",
-        link(
-            "https://www.linkedin.com/in/caudanna-moussa-y-70115710b/",
-            "Caudanna Moussa YEO"),
-    ]
+    elements = ["To do list App"]
     layout(*elements)

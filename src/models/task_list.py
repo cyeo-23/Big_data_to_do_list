@@ -126,6 +126,7 @@ class TaskList:
         Raises:
             InvalidTaskStatus: if the status is not valid.
         """
+        print("status:", status)
         if status not in ["ongoing", "completed"]:
             raise InvalidTask(f"Invalid status {status}.")
         self.collection.update_one(
