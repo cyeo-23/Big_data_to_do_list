@@ -1,10 +1,10 @@
 """Unit tests for TaskList class."""
 import unittest
 from unittest.mock import Mock
-from src.models.task_list import TaskList
-from src.models.task import Task
-from src.models.user import User
-from src.utils.exceptions import TaskNotFound, InvalidTask
+from models.task_list import TaskList
+from models.task import Task
+from models.user import User
+from utils.exceptions import TaskNotFound, InvalidTask
 import datetime
 
 
