@@ -2,14 +2,14 @@
 import streamlit as st
 from utils.st_utils import footer, nav_page
 from utils.logger import Logger
-from services.user_services import UserServices 
-from models.user import User 
+from services.user_services import UserServices
 
 log = Logger(__name__)
 
-# Page de connexion
 
+# Page de connexion
 def login_page(service: UserServices):
+    """Display the login page."""
     st.title("Page de Connexion")
     pseudo = st.text_input("Nom d'utilisateur")
     password = st.text_input("Mot de passe", type="password")
@@ -21,7 +21,8 @@ def login_page(service: UserServices):
             nav_page("tasks")
         else:
             st.error("Identifiants incorrects")
-            
+
+
 def main():
     """Display the main Streamlit application page."""
     st.set_page_config(page_title="Connexion page", page_icon="👥")

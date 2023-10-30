@@ -1,4 +1,5 @@
 """This module is for services model."""
+from turtle import st
 import pymongo
 from utils.logger import Logger
 from utils.exceptions import UserAlreadyExists, UserNotFound
@@ -22,7 +23,7 @@ class UserServices:
             collection_name (str): The name of the collection to use.
         """
         self.collection = db[COLLECTION]
-        self.password_hasher = argon2.PasswordHasher()
+        self.ph = argon2.PasswordHasher()
 
     def add_user(self, user: User) -> User:
         """Add a user to the database.
@@ -36,7 +37,7 @@ class UserServices:
             if existing_user:
                 raise UserAlreadyExists(
                     f"A user with pseudo{user.pseudo} exists.")
-            user.password = self.password_hasher.hash(user.password)
+            user.password = self.ph.hash(user.password)
             result = self.collection.insert_one(user.to_dict())
             user.id = result.inserted_id
             return user
@@ -62,26 +63,14 @@ class UserServices:
             user: Return a user
         """
         try:
-<<<<<<< HEAD
-            hash = argon2.hash_password(password)
-            user_found = self.collection.find_one({"pseudo": pseudo,
-                                                   "password": hash})
-            if not user_found:
-                raise UserNotFound("""User not found.
-                                    Please check your credentials.""")
-            user = User.from_dict(user_found)
-            return user
-=======
             user_found = self.collection.find_one({"pseudo": pseudo})
-            if not user_found or not self.password_hasher.verify(user_found["password"], password):
-                raise UserNotFound("""Aucun utilisateur trouvé avec ses crédentials.
+            is_verified = self.ph.verify(user_found["password"], password)
+            if not user_found or not is_verified:
+                raise UserNotFound("""Aucun utilisateur trouvé.
                                    Veuillez verifier svp vos accès""")
-            
-            
-            else :
+            else:
                 user = User.from_dict(user_found)
                 return user
->>>>>>> 1d4b003be380f2234eaa52bd84d9351a36a93510
         except pymongo.errors.ConnectionFailure as e:
             log.log_error(f"Erreur de connexion à la BD MongoDB: {e}")
         except pymongo.errors.PyMongoError as e:
@@ -99,11 +88,12 @@ class UserServices:
             Mongo Exception: if pymongo find exception.
         """
         try:
+            user.password = self.password_hasher.hash(user.password)
             result = self.collection.update_one(
                 {"_id": user.id},
                 {"$set": user.to_dict()})
             if result.modified_count > 0:
-                raise pymongo.errors.WriteError("No document matches.")
+                log.log_debug(f"user {user.id} modified.")
             else:
                 log.log_debug(f"user {user.id} not found.")
 
@@ -116,6 +106,10 @@ class UserServices:
             log.log_error(f"Une erreur d'écriture s'est produite: {e}")
         except Exception as e:
             log.log_error(f"Une erreur inattendue s'est produite: {e}")
+
+    def disconnect(self):
+        """Disconnect user."""
+        del st.session_state["user"]
 
     def remove_user(self, _id: str) -> None:
         """Delete user.

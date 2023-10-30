@@ -1,7 +1,7 @@
 """This module is for Task model."""
 
 from datetime import datetime
-from src.utils.logger import Logger
+from utils.logger import Logger
 log = Logger(__name__)
 
 
@@ -12,7 +12,7 @@ class Task:
                     self,
                     name: str,
                     description: str,
-                    date: datetime,
+                    date_c: datetime,
                     status: str,
                     category: str,
                     user_id: str) -> None:
@@ -21,7 +21,7 @@ class Task:
         Args:
             name (str): The name of the task.
             description (str): The description of the task.
-            date (str): The creation date of the task.
+            date_c (datetime): The creation date of the task.
             status (str): The status of the task.
             category (str): The category of the task.
             user_id (str): The user ID of the task.
@@ -30,9 +30,8 @@ class Task:
         self.id = None
         self.name = name
         self.description = description
-        date = datetime.now().date()
-        self.creation_date = date
-        status = "ongoing"
+        self.creation_date = date_c
+        self.status = "ongoing"
         self.status = status
         self.category = category
         self.user_id = user_id

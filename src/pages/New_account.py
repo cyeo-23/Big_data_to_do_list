@@ -2,27 +2,31 @@
 import streamlit as st
 from utils.st_utils import footer, nav_page
 from utils.logger import Logger
-from services.user_services import UserServices 
-from models.user import User 
+from services.user_services import UserServices
+from models.user import User
 
 log = Logger(__name__)
 
+
 def create_account_page(service: UserServices):
+    """Display the login page."""
     st.title("Créer un Compte")
     pseudo = st.text_input("Nom d'Utilisateur")
     password = st.text_input("Mot de Passe", type="password")
     firstname = st.text_input("Prenom(s)")
     lastname = st.text_input("Nom(s)")
     if st.button("Creer"):
-        new_user = User(firstname=firstname, lastname=lastname, password=password, pseudo=pseudo)
-        try :
+        new_user = User(firstname=firstname, lastname=lastname,
+                        password=password, pseudo=pseudo)
+        try:
             user = service.add_user(new_user)
             print(user)
-        except Exception as e :
+        except Exception as e:
             log.log_error(f"Une erreur inattendue s'est produite: {e}")
-        else :
-            st.success("Compte créé avec succès. Vous pouvez maintenant vous connecter.")
-   
+        else:
+            st.success("Compte créé avec succès. Veuillez vous connecter")
+
+
 def main():
     """Display the main Streamlit application page."""
     st.set_page_config(layout="wide", page_title="You do", page_icon="📜")
@@ -38,17 +42,15 @@ def main():
     )
 
     st.markdown('<p class="font">Accueil</p>', unsafe_allow_html=True)
-    try :
+    try:
         service = UserServices()
-    except Exception as e :
+    except Exception as e:
         print(e)
 
-    if 'user_id' not in st.session_state:
+    if 'user' not in st.session_state:
         create_account_page(service)
     else:
         nav_page("tasks")
-
-
     footer()
 
 
