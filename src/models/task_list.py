@@ -1,9 +1,9 @@
 """This module is for TaskList model."""
-from utils.logger import Logger
-from utils.exceptions import TaskNotFound, InvalidTask, TaskAlreadyExists
-from config.database_cursor import db
-from models.task import Task
-from models.user import User
+from src.utils.logger import Logger
+from src.utils.exceptions import TaskNotFound, InvalidTask, TaskAlreadyExists
+from src.config.database_cursor import db
+from src.models.task import Task
+from src.models.user import User
 
 log = Logger(__name__)
 
