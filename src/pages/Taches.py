@@ -6,14 +6,12 @@ from services.task_service import TaskService
 # Initialize the TaskService
 task_service = TaskService()
 
-# get the current user
-
 
 def display_page():
     """Display the tasks page."""
     current_user = st.session_state.user
     st.set_page_config(layout="wide",
-                       page_title="Taches", page_icon="👥")
+                       page_title="Taches", page_icon="📜")
 
     # Styling for the page
     st.markdown(
@@ -38,17 +36,21 @@ def display_page():
         unsafe_allow_html=True
     )
     form_col1, form_col2, form_col3 = st.columns([3, 3, 3])
-    task_name = form_col1.text_input("Nom")
-    task_description = form_col2.text_input("Description")
-    task_category = form_col3.text_input("Catégorie")
+    t_name = form_col1.text_input("Nom")
+    t_description = form_col2.text_input("Description")
+    t_category = form_col3.text_input("Catégorie")
 
     if st.button("Ajouter"):
-        task_service.create_task(
-                                    task_name,
-                                    task_description,
-                                    current_user,
-                                    task_category)
-        st.success("Tache bien ajoutée!")
+        if (t_name == "") or (t_description == "") or (t_category == ""):
+            st.error("Veuillez remplir tous les champs!")
+            return
+        else:
+            task_service.create_task(
+                                        t_name,
+                                        t_description,
+                                        current_user,
+                                        t_category)
+            st.success("Tache bien ajoutée!")
 
     # List Tasks
     st.write("\n\n")

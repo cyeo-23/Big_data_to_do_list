@@ -1,5 +1,5 @@
 """Test Task model."""
-from src.models.task import Task
+from models.task import Task
 import datetime
 
 
