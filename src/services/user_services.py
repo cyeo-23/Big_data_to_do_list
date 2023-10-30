@@ -113,4 +113,3 @@ class UserServices:
                 log.log_error(f"Une erreur inattendue s'est produite: {e}")
         else:
             raise UserEmptyPassword("The password is empty.")
-
