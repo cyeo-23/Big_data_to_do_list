@@ -32,17 +32,19 @@ class UserServices:
             user (User): The user to add.
         """
         # check if user pseudo already exists
-        if user.password == "" or user.password ==None:
+        if user.password == "" or user.password is None:
             try:
-                existing_user = self.collection.find_one({"pseudo": user.pseudo})
+                existing_user = self.collection.find_one(
+                    {"pseudo": user.pseudo})
                 if existing_user:
                     raise UserAlreadyExists(
-                        f"A user with pseudo{user.pseudo} exists.")
+                        f"A user with pseudo{user.pseudo} exists."
+                        )
                 user.password = self.ph.hash(user.password)
                 result = self.collection.insert_one(user.to_dict())
                 user.id = result.inserted_id
-                return user
                 log.log_debug(f"user {user.pseudo} added to the database.")
+                return user
             except pymongo.errors.ConnectionFailure as e:
                 log.log_error(f"Erreur de connexion à la BD MongoDB: {e}")
             except pymongo.errors.PyMongoError as e:
@@ -50,7 +52,7 @@ class UserServices:
             except Exception as e:
                 log.log_error(f"Une erreur inattendue s'est produite: {e}")
         else:
-            raise UserEmptyPassword(f"The password is empty.")
+            raise UserEmptyPassword("The password is empty.")
 
     def connect_user(self, pseudo: str, password: str) -> User:
         """Connect a user to the app.
@@ -90,7 +92,7 @@ class UserServices:
         Raises:
             Mongo Exception: if pymongo find exception.
         """
-        if user.password == "" or user.password ==None:
+        if user.password == "" or user.password is None:
             try:
                 user.password = self.password_hasher.hash(user.password)
                 result = self.collection.update_one(
@@ -111,7 +113,7 @@ class UserServices:
             except Exception as e:
                 log.log_error(f"Une erreur inattendue s'est produite: {e}")
         else:
-            raise UserEmptyPassword(f"The password is empty.")            
+            raise UserEmptyPassword("The password is empty.")
 
     def disconnect(self):
         """Disconnect user."""

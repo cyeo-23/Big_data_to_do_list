@@ -30,6 +30,7 @@ class UserNotFound(Exception):
 
     pass
 
+
 class UserEmptyPassword(Exception):
     """Exception raised when the user password is empty.
 
