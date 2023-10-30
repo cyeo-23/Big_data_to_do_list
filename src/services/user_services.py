@@ -1,5 +1,4 @@
 """This module is for services model."""
-import pymongo
 from utils.logger import Logger
 from utils.exceptions import UserAlreadyExists, UserNotFound, UserEmptyPassword
 from config.database_cursor import db
