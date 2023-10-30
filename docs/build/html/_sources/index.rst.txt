@@ -1,10 +1,10 @@
-.. TodoList documentation master file, created by
-   sphinx-quickstart on Mon Oct 30 20:01:56 2023.
+.. taskify documentation master file, created by
+   sphinx-quickstart on Mon Oct 30 23:38:57 2023.
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to TodoList's documentation!
-====================================
+Welcome to taskify's documentation!
+===================================
 
 .. toctree::
    :maxdepth: 2

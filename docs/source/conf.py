@@ -12,14 +12,18 @@
 #
 import os
 import sys
-sys.path.insert(0, os.path.abspath('../src'))
+sys.path.insert(0, os.path.abspath('../../src'))
+sys.path.insert(1, os.path.abspath('../../src/models'))
+sys.path.insert(2, os.path.abspath('../../src/utils'))
+sys.path.insert(3, os.path.abspath('../../src/tests'))
+sys.path.insert(4, os.path.abspath('../../src/services'))
 
 
 # -- Project information -----------------------------------------------------
 
-project = 'TodoList'
-copyright = '2023, Falmata Hassane and Caudanna Moussa Yeo'
-author = 'Falmata Hassane and Caudanna Moussa Yeo'
+project = 'taskify'
+copyright = '2023, Moucay'
+author = 'Moucay'
 
 # The full version, including alpha/beta/rc tags
 release = '1.0.0'
@@ -30,8 +34,8 @@ release = '1.0.0'
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
-extensions = [
-]
+extensions = ['sphinx.ext.todo', 'sphinx.ext.viewcode', 'sphinx.ext.autodoc']
+
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -41,7 +45,7 @@ templates_path = ['_templates']
 #
 # This is also used if you do content translation via gettext catalogs.
 # Usually you set "language" from the command line for these cases.
-language = 'en'
+language = 'fr'
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
