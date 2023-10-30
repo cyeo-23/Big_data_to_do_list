@@ -6,14 +6,12 @@ from services.task_service import TaskService
 # Initialize the TaskService
 task_service = TaskService()
 
-# get the current user
-
 
 def display_page():
     """Display the tasks page."""
     current_user = st.session_state.user
     st.set_page_config(layout="wide",
-                       page_title="Taches", page_icon="👥")
+                       page_title="Taches", page_icon="📜")
 
     # Styling for the page
     st.markdown(
