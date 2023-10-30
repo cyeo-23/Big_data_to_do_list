@@ -41,12 +41,16 @@ def display_page():
     task_category = form_col3.text_input("Catégorie")
 
     if st.button("Ajouter"):
-        task_service.create_task(
-                                    task_name,
-                                    task_description,
-                                    current_user,
-                                    task_category)
-        st.success("Tache bien ajoutée!")
+        if (task_name == "") or (task_description == "") or (task_category == ""):
+            st.error("Veuillez remplir tous les champs!")
+            return
+        else:
+            task_service.create_task(
+                                        task_name,
+                                        task_description,
+                                        current_user,
+                                        task_category)
+            st.success("Tache bien ajoutée!")
 
     # List Tasks
     st.write("\n\n")
