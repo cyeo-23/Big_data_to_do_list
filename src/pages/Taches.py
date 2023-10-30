@@ -101,6 +101,7 @@ def display_page():
             task_service.delete_task(task.id)
             st.success("Tâche supprimée avec succès!")
             st.experimental_rerun()
+
         if task.status != "completed":
             if col10.button("Completer", key=f"complete_{task.id}"):
                 task_service.set_task_completed(task.id)

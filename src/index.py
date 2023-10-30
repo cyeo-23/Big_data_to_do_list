@@ -18,7 +18,7 @@ def login_page(service: UserServices):
         user = service.connect_user(pseudo=pseudo, password=password)
         if user:
             st.session_state['user'] = user
-            nav_page("tasks")
+            nav_page("Taches")
         else:
             st.error("Identifiants incorrects")
 
@@ -43,7 +43,7 @@ def main():
     if 'user' not in st.session_state:
         login_page(service)
     else:
-        nav_page("tasks")
+        nav_page("Taches")
 
     footer()
 
