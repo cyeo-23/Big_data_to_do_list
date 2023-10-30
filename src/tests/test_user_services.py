@@ -32,6 +32,16 @@ def test_valid_credentials(mocker):
     assert result.pseudo == "johndoe"
 
 
+# def test_raises_user_not_found_if_pseudo_empty():
+#     "Test connection if pseudo is empty."
+#     user_service = UserServices()
+
+#     try:
+#         user_service.connect_user("", "password123")
+#     except Exception as e:
+#         assert isinstance(e, UserNotFound)
+
+
 def test_user_not_found(mocker):
     """Test user not found."""
     user_service = UserServices()
