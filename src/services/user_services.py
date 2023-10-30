@@ -1,5 +1,4 @@
 """This module is for services model."""
-from turtle import st
 import pymongo
 from utils.logger import Logger
 from utils.exceptions import UserAlreadyExists, UserNotFound, UserEmptyPassword
@@ -114,10 +113,6 @@ class UserServices:
                 log.log_error(f"Une erreur inattendue s'est produite: {e}")
         else:
             raise UserEmptyPassword("The password is empty.")
-
-    def disconnect(self):
-        """Disconnect user."""
-        del st.session_state["user"]
 
     def remove_user(self, _id: str) -> None:
         """Delete user.

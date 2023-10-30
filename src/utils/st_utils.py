@@ -15,6 +15,11 @@ def link(href, text, **style):
     return a(_href=href, _target="_blank", style=styles(**style))(text)
 
 
+def disconnect():
+    """Disconnect user."""
+    del st.session_state["user"]
+
+
 def nav_page(page_name, timeout_secs=3):
     """Navigate between pages."""
     nav_script = """

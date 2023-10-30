@@ -1,12 +1,14 @@
 """Module to display the tasks page in the Streamlit application."""
 import streamlit as st
-from utils.st_utils import footer, nav_page
+from utils.st_utils import footer, nav_page, disconnect
 
 
 def display_page():
     """Display the Streamlit page for tasks."""
     st.set_page_config(layout="wide", page_title="You do", page_icon="📜")
-
+    if st.sidebar.button("Deconnexion"):
+        disconnect()
+        nav_page("")
     st.markdown(
         """<style>.font {
         font-size:35px ; font-family: 'Cooper Black'; color: white;}

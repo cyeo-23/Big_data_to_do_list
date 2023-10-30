@@ -1,7 +1,7 @@
 """This module provides the main functionality."""
 import argon2
 import streamlit as st
-from utils.st_utils import footer, nav_page
+from utils.st_utils import footer, nav_page, disconnect
 from utils.logger import Logger
 from services.user_services import UserServices
 from models.user import User
@@ -13,6 +13,9 @@ password_hasher = argon2.PasswordHasher()
 def update_user_page(user: User):
     """Updade User page."""
     service = UserServices()
+    if st.sidebar.button("Deconnexion"):
+        disconnect()
+        nav_page("")
     st.title("Modifier mon compte")
     old_password = st.text_input("Ancien mot de Passe", type="password")
     new_password = st.text_input("Nouveau mot de Passe", type="password")
