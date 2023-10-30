@@ -7,7 +7,6 @@ from services.user_services import UserServices
 log = Logger(__name__)
 
 
-
 def login_page(service: UserServices):
     """Code for login page."""
     st.title("Page de Connexion")

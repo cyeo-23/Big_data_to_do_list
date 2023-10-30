@@ -114,27 +114,3 @@ class UserServices:
         else:
             raise UserEmptyPassword("The password is empty.")
 
-    def remove_user(self, _id: str) -> None:
-        """Delete user.
-
-        Args:
-            id (str): ID of the user to delete.
-
-        Raises:
-            UserNotFound: Exception when user not found.
-            Mongo Exception: if pymongo find exception.
-
-        """
-        try:
-            result = self.collection.delete_one({"user_id": _id})
-            if result.deleted_count == 0:
-                raise UserNotFound(f"user with ID {_id} not found.")
-            log.log_debug(f"user {_id} deleted.")
-        except pymongo.errors.ConnectionFailure as e:
-            log.log_error(f"Erreur de connexion à la BD MongoDB: {e}")
-        except pymongo.errors.PyMongoError as e:
-            log.log_error(f"Une erreur PyMongo s'est produite: {e}")
-        except pymongo.errors.WriteError as e:
-            log.log_error(f"Une erreur d'écriture s'est produite: {e}")
-        except Exception as e:
-            log.log_error(f"Une erreur inattendue s'est produite: {e}")

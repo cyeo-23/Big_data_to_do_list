@@ -12,7 +12,7 @@ task_service = TaskService()
 def display_page():
     """Display the tasks page."""
     current_user = st.session_state.user
-    st.set_page_config(layout= "wide",
+    st.set_page_config(layout="wide",
                        page_title="Taches", page_icon="👥")
 
     # Styling for the page
@@ -24,7 +24,7 @@ def display_page():
             }
         </style>""", unsafe_allow_html=True
     )
-    
+
     if st.sidebar.button("Deconnexion"):
         disconnect()
         nav_page("")
