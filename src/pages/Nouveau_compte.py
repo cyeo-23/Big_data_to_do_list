@@ -50,7 +50,7 @@ def main():
     if 'user' not in st.session_state:
         create_account_page(service)
     else:
-        nav_page("tasks")
+        nav_page("Taches")
 
     footer()
 

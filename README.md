@@ -28,7 +28,12 @@ Taskify est une application de gestion de tâches simple et efficace pour vous a
    ```bash
    poetry install
 
-3. Lancer ensuite le pojoet :
+4. Creer ensuite un repertoire de logs :
+
+   ```bash
+   mkdir logs
+
+5. Lancer ensuite le pojoet :
 
    ```bash
    poetry run streamlit run src/index.py
