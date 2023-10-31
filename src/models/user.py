@@ -22,19 +22,28 @@ class User:
             pseudo (str): The pseudo of the user.
         """
         # id will be set by the database mongo db
-        self.id = None
-        self.firstname = firstname
-        self.lastname = lastname
-        self.password = password
-        self.pseudo = pseudo
+
+        if(isinstance(firstname, str) and isinstance(lastname, str) and
+           isinstance(pseudo, str) and isinstance(password, str)):
+            self.id = None
+            self.firstname = firstname
+            self.lastname = lastname
+            self.password = password
+            self.pseudo = pseudo
+        else:
+            raise TypeError()
 
     def update(self, firstname, lastname, pseudo, password) -> None:
         """Updade User infos."""
-        self.firstname = firstname
-        self.lastname = lastname
-        self.pasword = password
-        self.pseudo = pseudo
-        log.log_debug(f"User {self.id} is modified")
+        if(isinstance(firstname, str) and isinstance(lastname, str) and
+           isinstance(pseudo, str) and isinstance(password, str)):
+            self.firstname = firstname
+            self.lastname = lastname
+            self.password = password
+            self.pseudo = pseudo
+            log.log_debug(f"User {self.id} is modified")
+        else:
+            raise TypeError()
 
     def to_dict(self) -> dict:
         """Convert the user to a dictionary."""

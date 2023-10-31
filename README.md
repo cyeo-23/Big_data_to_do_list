@@ -1,6 +1,6 @@
-# Taskify - Gestionnaire de Tâches
+# TodoList - Gestionnaire de Tâches
 
-Taskify est une application de gestion de tâches simple et efficace pour vous aider à organiser votre vie quotidienne.
+TodoList est une application de gestion de tâches simple et efficace pour vous aider à organiser votre vie quotidienne.
 
 <!-- ![Aperçu de Taskify](link-to-image.png) -->
 
@@ -36,6 +36,6 @@ Taskify est une application de gestion de tâches simple et efficace pour vous a
 5. Lancer ensuite le pojoet :
 
    ```bash
-   poetry run streamlit run src/index.py
+   poetry run streamlit run src/accueil.py
 
 NB: Le fichier .env a été volontairemnt laissé dans le projet afin de permettre à toutes les personnes ayant accès au projet de le lancer aisement.
