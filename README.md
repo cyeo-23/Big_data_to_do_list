@@ -1,6 +1,6 @@
-# Taskify - Gestionnaire de Tâches
+# TodoList - Gestionnaire de Tâches
 
-Taskify est une application de gestion de tâches simple et efficace pour vous aider à organiser votre vie quotidienne.
+TodoList est une application de gestion de tâches simple et efficace pour vous aider à organiser votre vie quotidienne.
 
 <!-- ![Aperçu de Taskify](link-to-image.png) -->
 
